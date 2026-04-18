@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dr8bc8vbn4ju"]
+
+[ext_resource type="PackedScene" uid="uid://dgugr3b708uqa" path="res://ui/scenes/pause.tscn" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://c4dkm3sxlixjh" path="res://ui/scripts/hud.gd" id="1_yqjtg"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("1_yqjtg")
+pause_scene = ExtResource("1_uwrxv")
