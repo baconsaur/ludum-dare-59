@@ -1,12 +1,31 @@
-[gd_scene load_steps=3 format=3 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=5 format=3 uid="uid://dr8bc8vbn4ju"]
 
+[ext_resource type="Script" uid="uid://3xw067i2h3vo" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://dgugr3b708uqa" path="res://ui/scenes/pause.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://c4dkm3sxlixjh" path="res://ui/scripts/hud.gd" id="1_yqjtg"]
+[ext_resource type="Script" uid="uid://bjsojkbl7s2qc" path="res://scripts/map.gd" id="5_p57ef"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_lnu2h")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource("1_yqjtg")
 pause_scene = ExtResource("1_uwrxv")
+
+[node name="Map" type="GridContainer" parent="HUD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+script = ExtResource("5_p57ef")
