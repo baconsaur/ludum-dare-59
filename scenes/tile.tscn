@@ -1,7 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dc0oyuwggfsh5"]
+[gd_scene load_steps=3 format=3 uid="uid://dc0oyuwggfsh5"]
 
 [ext_resource type="Texture2D" uid="uid://bmnjmwc4dk4hy" path="res://sprites/base_tile.png" id="1_3dk36"]
+[ext_resource type="Script" uid="uid://cr6qve8nfrhi7" path="res://scripts/tile.gd" id="2_ywnoi"]
 
 [node name="Tile" type="TextureButton"]
 button_mask = 3
 texture_normal = ExtResource("1_3dk36")
+script = ExtResource("2_ywnoi")

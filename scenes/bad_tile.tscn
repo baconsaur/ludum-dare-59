@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://sgdqvd2x682p"]
+
+[ext_resource type="PackedScene" uid="uid://dc0oyuwggfsh5" path="res://scenes/tile.tscn" id="1_um4re"]
+
+[node name="BadTile" instance=ExtResource("1_um4re")]
+offset_left = 856.0
+offset_top = 770.0
+offset_right = 872.0
+offset_bottom = 786.0

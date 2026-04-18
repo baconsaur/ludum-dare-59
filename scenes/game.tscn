@@ -7,6 +7,8 @@
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
+map_width = 8
+map_height = 6
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -29,3 +31,24 @@ grow_vertical = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
 script = ExtResource("5_p57ef")
+
+[node name="UI" type="MarginContainer" parent="HUD"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="ScanResults" type="Panel" parent="HUD/UI"]
+layout_mode = 2
