@@ -1,7 +1,9 @@
 extends GridContainer
 signal scanned
 signal flagged
+signal unflagged
 
+@export var num_flags: int = 3
 @export var scan_radius: int = 1
 
 var grid: Array = []
@@ -26,20 +28,30 @@ func tile_action(tile, i, j):
 		flag(tile, Vector2i(i, j))
 	elif Input.is_action_just_released("scan"):
 		scan(tile, Vector2i(i, j))
-	print_debug("Clicked " + tile.name + ": (" + str(i) + ", " + str(j)+")")
 	
 func scan(tile, coords: Vector2i):
-	var results = []
-	# TODO get other tiles in scan radius
-	var tiles = [coords] + get_neighbors(coords, scan_radius)
-	for t in tiles:
-		var scan_tile = grid[t.x][t.y]
-		results.append(scan_tile.scan())
+	clear_scan()
+	var results = [tile.scan()]
+	var neighbors = get_neighbors(coords, scan_radius)
+	for neighbor in neighbors:
+		var target_tile = grid[neighbor.x][neighbor.y]
+		results.append(target_tile.scan(1))
 	emit_signal("scanned", results)
 
+func clear_scan():
+	for row in grid:
+		for tile in row:
+			tile.clear_scan()
+
 func flag(tile, coords):
-	tile.flag()
-	emit_signal("flagged", coords)
+	if num_flags <= 0 and !tile.flagged:
+		return
+	var is_flagged = tile.flag()
+	if is_flagged:
+		num_flags -= 1
+	else:
+		num_flags += 1
+	print_debug(num_flags)
 
 func get_neighbors(coords, radius):
 	var neighbors = []

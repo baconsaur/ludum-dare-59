@@ -1,9 +1,45 @@
-[gd_scene load_steps=3 format=3 uid="uid://dc0oyuwggfsh5"]
+[gd_scene load_steps=5 format=3 uid="uid://dc0oyuwggfsh5"]
 
 [ext_resource type="Texture2D" uid="uid://bmnjmwc4dk4hy" path="res://sprites/base_tile.png" id="1_3dk36"]
 [ext_resource type="Script" uid="uid://cr6qve8nfrhi7" path="res://scripts/tile.gd" id="2_ywnoi"]
+[ext_resource type="Texture2D" uid="uid://cx7270cqgjakd" path="res://sprites/flag.png" id="3_jy7pm"]
+[ext_resource type="Texture2D" uid="uid://t4j4n02hucp" path="res://sprites/scan_effect.png" id="4_q7utx"]
 
 [node name="Tile" type="TextureButton"]
 button_mask = 3
 texture_normal = ExtResource("1_3dk36")
 script = ExtResource("2_ywnoi")
+
+[node name="Flag" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_jy7pm")
+stretch_mode = 3
+
+[node name="ScanEffect" type="TextureRect" parent="."]
+self_modulate = Color(1, 0, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_q7utx")
+stretch_mode = 3

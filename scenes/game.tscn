@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=6 format=3 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://3xw067i2h3vo" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://dgugr3b708uqa" path="res://ui/scenes/pause.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://c4dkm3sxlixjh" path="res://ui/scripts/hud.gd" id="1_yqjtg"]
+[ext_resource type="Script" uid="uid://fwif2mvttqd4" path="res://scripts/scanner.gd" id="5_iywne"]
 [ext_resource type="Script" uid="uid://bjsojkbl7s2qc" path="res://scripts/map.gd" id="5_p57ef"]
 
 [node name="Game" type="Node2D"]
@@ -30,6 +31,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
 script = ExtResource("5_p57ef")
 
 [node name="UI" type="MarginContainer" parent="HUD"]
@@ -39,7 +42,7 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -40.0
-offset_top = -40.0
+offset_top = -30.0
 offset_right = 40.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -50,5 +53,10 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="ScanResults" type="Panel" parent="HUD/UI"]
+[node name="ScanDisplay" type="Panel" parent="HUD/UI"]
+clip_contents = true
 layout_mode = 2
+
+[node name="ScanSignals" type="Line2D" parent="HUD/UI/ScanDisplay"]
+position = Vector2(1, 13)
+script = ExtResource("5_iywne")
