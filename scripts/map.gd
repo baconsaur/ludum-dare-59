@@ -3,16 +3,43 @@ signal scanned
 signal flagged
 signal unflagged
 
+@export var width: int = 4
+@export var height: int = 4
 @export var num_flags: int = 3
 @export var scan_radius: int = 1
+@export var noise_frequency: float = 3.5
+@export var noise_jitter: float = 2.5
+@export var max_noise_amplitude: float = 3.0
+@export var base_signal_freq: float = 0.2
+@export var max_signal_freq_offset: float = 0.65
 
 var grid: Array = []
 var tile_obj: PackedScene = preload("res://scenes/tile.tscn")
 
 
-func initialize(width: int, height: int):
-	columns = width
+func _ready() -> void:
+	randomize()
+
+func initialize():
+	var noise_map = FastNoiseLite.new()
+	
+	noise_map.noise_type = FastNoiseLite.TYPE_CELLULAR
+	if OS.is_debug_build():
+		noise_map.seed = 69420
+	else:
+		noise_map.seed = randi()
+	noise_map.frequency = noise_frequency
+	noise_map.cellular_distance_function = FastNoiseLite.DISTANCE_HYBRID
+	noise_map.cellular_return_type = FastNoiseLite.RETURN_DISTANCE2_MUL
+	noise_map.cellular_jitter = noise_jitter
+	
+	noise_map.domain_warp_type = FastNoiseLite.DOMAIN_WARP_SIMPLEX
+	noise_map.domain_warp_amplitude = 65
+	noise_map.domain_warp_frequency = 0.05
+	
+	
 	grid.clear()
+	self.columns = width
 	for i in range(height):
 		var row = []
 		grid.append(row)
@@ -20,6 +47,13 @@ func initialize(width: int, height: int):
 			var tile = tile_obj.instantiate()
 			tile.pressed.connect(tile_action.bind(tile, i, j))
 			add_child(tile)
+			tile.init_tile(
+				abs(noise_map.get_noise_2d(i, j)),
+				randf_range(
+					base_signal_freq,
+					base_signal_freq + max_signal_freq_offset,
+				),
+			)
 			row.append(tile)
 
 func tile_action(tile, i, j):
@@ -31,12 +65,13 @@ func tile_action(tile, i, j):
 	
 func scan(tile, coords: Vector2i):
 	clear_scan()
-	var results = [tile.scan()]
-	var neighbors = get_neighbors(coords, scan_radius)
+	var results = []
+	var neighbors = dedupe(get_neighbors(coords, scan_radius))
 	for neighbor in neighbors:
 		var target_tile = grid[neighbor.x][neighbor.y]
-		results.append(target_tile.scan(1))
-	emit_signal("scanned", results)
+		var distance = neighbor.distance_to(coords)
+		results.append(target_tile.scan(distance, scan_radius))
+	emit_signal("scanned", results, scan_radius)
 
 func clear_scan():
 	for row in grid:
@@ -80,3 +115,9 @@ func get_neighbors(coords, radius):
 		for neighbor in current_neighbors:
 			neighbors += get_neighbors(neighbor, radius - 1)
 	return neighbors
+
+func dedupe(array: Array) -> Array:
+	var dict := {}
+	for i in array:
+		dict[i] = 1
+	return dict.keys()

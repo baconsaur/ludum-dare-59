@@ -1,6 +1,7 @@
 extends TextureButton
 
-@export var max_amplitude = 5.0
+@export var max_signal_decay: float = 0.8
+@export var min_scan_opacity: float = 0.2
 
 var signal_amplitude = 0.0
 var signal_frequency = 0.0
@@ -9,25 +10,23 @@ var flagged = false
 @onready var flag_sprite = $Flag
 @onready var scan_effect = $ScanEffect
 
-func _ready() -> void:
-	init_tile()
-
-func init_tile():
+func init_tile(amplitude, frequency):
 	flag_sprite.visible = false
 	scan_effect.self_modulate.a = 0.0
-	randomize()
-	signal_amplitude = randf_range(0, max_amplitude)
-	signal_frequency = randf_range(0.4, 0.6)
+	signal_amplitude = amplitude
+	signal_frequency = frequency
 	if OS.is_debug_build():
-		var debug_magnitude = abs(signal_amplitude / max_amplitude)
+		var debug_magnitude = signal_amplitude
 		modulate = Color(debug_magnitude, 0.5, 0.5)
 
-func scan(distance: float = 0.0):
-	scan_effect.self_modulate.a = 0.8 - distance * 0.5
+func scan(distance: float, radius: float):
+	var decay = distance / radius
+	scan_effect.self_modulate.a = lerp(1.0, min_scan_opacity, decay)
 
 	return {
-		"amplitude": signal_amplitude if distance == 0 else signal_amplitude * 0.5,
-		"frequency": signal_frequency
+		"amplitude": signal_amplitude,
+		"frequency": signal_frequency,
+		"distance": distance,
 	}
 
 func clear_scan():
