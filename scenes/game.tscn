@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=7 format=3 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://3xw067i2h3vo" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://dgugr3b708uqa" path="res://ui/scenes/pause.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://c4dkm3sxlixjh" path="res://ui/scripts/hud.gd" id="1_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://rg4lgb5gkjyx" path="res://scenes/map.tscn" id="4_iywne"]
 [ext_resource type="Script" uid="uid://fwif2mvttqd4" path="res://scripts/scanner.gd" id="5_iywne"]
-[ext_resource type="Script" uid="uid://bjsojkbl7s2qc" path="res://scripts/map.gd" id="5_p57ef"]
+[ext_resource type="Texture2D" uid="uid://cx7270cqgjakd" path="res://sprites/flag.png" id="6_p57ef"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
@@ -15,28 +16,9 @@ script = ExtResource("1_lnu2h")
 script = ExtResource("1_yqjtg")
 pause_scene = ExtResource("1_uwrxv")
 
-[node name="Map" type="GridContainer" parent="HUD"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 0
-script = ExtResource("5_p57ef")
-width = 15
-height = 10
-scan_radius = 2
+[node name="Map" parent="HUD" instance=ExtResource("4_iywne")]
 
-[node name="UI" type="MarginContainer" parent="HUD"]
+[node name="Scanner" type="MarginContainer" parent="HUD"]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -54,10 +36,71 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="ScanDisplay" type="Panel" parent="HUD/UI"]
+[node name="ScanDisplay" type="Panel" parent="HUD/Scanner"]
 clip_contents = true
 layout_mode = 2
 
-[node name="ScanSignals" type="Line2D" parent="HUD/UI/ScanDisplay"]
+[node name="ScanSignals" type="Line2D" parent="HUD/Scanner/ScanDisplay"]
 position = Vector2(1, 13)
 script = ExtResource("5_iywne")
+
+[node name="Flags" type="HBoxContainer" parent="HUD"]
+offset_right = 26.0
+offset_bottom = 16.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="FlagIcon" type="TextureRect" parent="HUD/Flags"]
+layout_mode = 2
+texture = ExtResource("6_p57ef")
+stretch_mode = 3
+
+[node name="FlagCount" type="Label" parent="HUD/Flags"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 5
+text = "0"
+
+[node name="LevelEndPrompt" type="CenterContainer" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.0
+offset_top = -20.0
+offset_right = 45.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="EndLevel" type="Button" parent="HUD/LevelEndPrompt"]
+layout_mode = 2
+text = "End Level"
+
+[node name="NextLevelPrompt" type="CenterContainer" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/NextLevelPrompt"]
+layout_mode = 2
+
+[node name="Score" type="Label" parent="HUD/NextLevelPrompt/VBoxContainer"]
+layout_mode = 2
+
+[node name="NextLevel" type="Button" parent="HUD/NextLevelPrompt/VBoxContainer"]
+layout_mode = 2
+text = "Next Level"
+
+[connection signal="pressed" from="HUD/LevelEndPrompt/EndLevel" to="." method="_on_end_level_pressed"]
+[connection signal="pressed" from="HUD/NextLevelPrompt/VBoxContainer/NextLevel" to="." method="_on_next_level_pressed"]

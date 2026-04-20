@@ -1,17 +1,18 @@
 extends GridContainer
 signal scanned
-signal flagged
-signal unflagged
+signal flags_updated
 
 @export var width: int = 4
 @export var height: int = 4
-@export var num_flags: int = 3
+@export var start_flags: int = 3
 @export var scan_radius: int = 1
 @export var noise_frequency: float = 3.5
 @export var noise_jitter: float = 2.5
 @export var max_noise_amplitude: float = 3.0
 @export var base_signal_freq: float = 0.2
 @export var max_signal_freq_offset: float = 0.65
+
+var num_flags: int
 
 var grid: Array = []
 var tile_obj: PackedScene = preload("res://scenes/tile.tscn")
@@ -21,8 +22,14 @@ func _ready() -> void:
 	randomize()
 
 func initialize():
-	var noise_map = FastNoiseLite.new()
+	num_flags = start_flags
+	for row in grid:
+		for tile in row:
+			tile.queue_free()
+	grid.clear()
 	
+	var noise_map = FastNoiseLite.new()
+	# Test values with this: https://auburn.github.io/FastNoiseLite
 	noise_map.noise_type = FastNoiseLite.TYPE_CELLULAR
 	if OS.is_debug_build():
 		noise_map.seed = 69420
@@ -36,9 +43,7 @@ func initialize():
 	noise_map.domain_warp_type = FastNoiseLite.DOMAIN_WARP_SIMPLEX
 	noise_map.domain_warp_amplitude = 65
 	noise_map.domain_warp_frequency = 0.05
-	
-	
-	grid.clear()
+
 	self.columns = width
 	for i in range(height):
 		var row = []
@@ -55,6 +60,8 @@ func initialize():
 				),
 			)
 			row.append(tile)
+	
+	emit_signal("flags_updated", num_flags)
 
 func tile_action(tile, i, j):
 	# TODO de-jank this if time allows
@@ -86,7 +93,7 @@ func flag(tile, coords):
 		num_flags -= 1
 	else:
 		num_flags += 1
-	print_debug(num_flags)
+	emit_signal("flags_updated", num_flags)
 
 func get_neighbors(coords, radius):
 	var neighbors = []
@@ -121,3 +128,10 @@ func dedupe(array: Array) -> Array:
 	for i in array:
 		dict[i] = 1
 	return dict.keys()
+
+func reveal_score():
+	var score = 0
+	for row in grid:
+		for tile in row:
+			score += tile.score()
+	return score
