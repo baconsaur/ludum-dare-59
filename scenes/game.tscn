@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=10 format=3 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://3xw067i2h3vo" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://dgugr3b708uqa" path="res://ui/scenes/pause.tscn" id="1_uwrxv"]
@@ -6,6 +6,32 @@
 [ext_resource type="PackedScene" uid="uid://rg4lgb5gkjyx" path="res://scenes/map.tscn" id="4_iywne"]
 [ext_resource type="Script" uid="uid://fwif2mvttqd4" path="res://scripts/scanner.gd" id="5_iywne"]
 [ext_resource type="Texture2D" uid="uid://cx7270cqgjakd" path="res://sprites/flag.png" id="6_p57ef"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p57ef"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.92, 0.56733334, 0, 0.8509804)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5sy4"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.835, 0.45, 0.8509804)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p57ef"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
@@ -62,34 +88,51 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 5
 text = "0"
 
-[node name="LevelEndPrompt" type="CenterContainer" parent="HUD"]
-visible = false
-anchors_preset = 5
+[node name="LevelEndPrompt" type="MarginContainer" parent="HUD"]
+anchors_preset = 7
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-offset_left = -45.0
-offset_right = 45.0
-offset_bottom = 40.0
+anchor_bottom = 1.0
+offset_left = -19.0
+offset_top = -20.0
+offset_right = 19.0
 grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
 mouse_filter = 2
+theme_override_constants/margin_left = 141
+theme_override_constants/margin_bottom = 4
 
 [node name="EndLevel" type="Button" parent="HUD/LevelEndPrompt"]
 layout_mode = 2
-text = "End Level"
+theme_override_styles/normal = SubResource("StyleBoxFlat_p57ef")
+theme_override_styles/hover = SubResource("StyleBoxFlat_u5sy4")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_p57ef")
+disabled = true
+text = "Build"
+icon_alignment = 2
 
-[node name="NextLevelPrompt" type="CenterContainer" parent="HUD"]
+[node name="NextLevelPrompt" type="MarginContainer" parent="HUD"]
 visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -33.0
-offset_right = 33.0
-offset_bottom = 48.0
+offset_left = -90.0
+offset_right = 90.0
+offset_bottom = 60.0
 grow_horizontal = 2
 mouse_filter = 2
+theme_override_constants/margin_top = 2
+
+[node name="Panel" type="Panel" parent="HUD/NextLevelPrompt"]
+custom_minimum_size = Vector2(180, 52)
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/NextLevelPrompt"]
 layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 2
 
 [node name="LevelStats" type="Label" parent="HUD/NextLevelPrompt/VBoxContainer"]
 layout_mode = 2
@@ -98,10 +141,13 @@ vertical_alignment = 1
 
 [node name="Continue" type="Button" parent="HUD/NextLevelPrompt/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
 text = "Continue
 "
 
 [node name="EndGamePrompt" type="CenterContainer" parent="HUD"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

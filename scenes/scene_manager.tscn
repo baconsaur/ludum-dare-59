@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://7p7axhmtbebh"]
+[gd_scene load_steps=5 format=3 uid="uid://7p7axhmtbebh"]
 
 [ext_resource type="Script" uid="uid://d23py8yuq17r0" path="res://scripts/scene_manager.gd" id="1_we8k5"]
 [ext_resource type="PackedScene" uid="uid://cdceaenvnjnfy" path="res://ui/scenes/main_menu.tscn" id="2_b81s6"]
 [ext_resource type="PackedScene" uid="uid://dr8bc8vbn4ju" path="res://scenes/game.tscn" id="3_h7lqg"]
+[ext_resource type="AudioStream" uid="uid://h0o2780apq6g" path="res://sound/transition.wav" id="4_h7lqg"]
 
 [node name="SceneManager" type="CanvasLayer"]
 process_mode = 3
@@ -22,3 +23,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
+
+[node name="TransitionSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_h7lqg")
+volume_db = 4.0
+bus = &"SFX"

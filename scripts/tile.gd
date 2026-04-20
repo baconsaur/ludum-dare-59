@@ -14,13 +14,19 @@ var value = 0
 var value_percent = 0
 
 @onready var flag_sprite = $Flag
+@onready var building_sprite = $Building
 @onready var scan_effect = $ScanEffect
-@onready var value_debug = $ValueDebug
+@onready var value_label = $Value
 @onready var sparkle_effect = $SparkleEffect
+@onready var value_animation = $Value/AnimationPlayer
+@onready var reward_sound = $RewardSound
+@onready var build_sound = $BuildSound
+@onready var flag_sound = $FlagSound
 
 func init_tile(amplitude, frequency):
 	sparkle_effect.visible = false
 	flag_sprite.visible = false
+	building_sprite.visible = false
 	scan_effect.self_modulate.a = 0.0
 	signal_amplitude = amplitude
 	signal_frequency = frequency
@@ -29,10 +35,7 @@ func set_value(rank, max_rank):
 	# TODO make numbers more good?
 	value = rank
 	value_percent = float(rank) / float(max_rank)
-	
-	value_debug.text = str(rank)
-	#if OS.is_debug_build():
-		#value_debug.visible = true
+	value_label.text = str(rank)
 
 func scan(distance: float, radius: float):
 	var decay = distance / radius
@@ -48,13 +51,19 @@ func clear_scan():
 	scan_effect.self_modulate.a = 0.0
 
 func flag():
+	flag_sound.play()
 	flagged = !flagged
 	flag_sprite.visible = flagged
 	return flagged
 
 func score():
-	#if OS.is_debug_build():
-		#value_debug.visible = true
+	if flagged:
+		build_sound.play()
+		flag_sprite.visible = false
+		building_sprite.visible = true
+		value_animation.play("reward")
+		if value_percent >= sparkle_threshold:
+			reward_sound.play()
 	
 	self_modulate = value_color_range.sample(value_percent)
 	if value_percent >= sparkle_threshold:
@@ -62,7 +71,6 @@ func score():
 		sparkle_effect.visible = true
 		sparkle_effect.emitting = true
 	clear_scan()
-	disabled = true
 	if flagged:
 		return value
 	return 0

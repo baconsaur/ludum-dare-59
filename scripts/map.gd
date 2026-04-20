@@ -14,10 +14,10 @@ signal flags_updated
 
 var num_flags: int
 var max_score: int = 0
-
 var grid: Array = []
 var tile_obj: PackedScene = preload("res://scenes/tile.tscn")
 
+@onready var transition_sound = $TransitionSound
 
 func _ready() -> void:
 	randomize()
@@ -154,8 +154,17 @@ func dedupe(array: Array) -> Array:
 	return dict.keys()
 
 func reveal_score():
+	for row in grid:
+		for tile in row:
+			tile.disabled = true
 	var score = 0
 	for row in grid:
 		for tile in row:
-			score += tile.score()
+			var tile_score = tile.score()
+			score += tile_score
+			
+			var timeout = 0.01
+			if tile_score > 0:
+				timeout = 0.1
+			await get_tree().create_timer(timeout).timeout
 	return [score, max_score]

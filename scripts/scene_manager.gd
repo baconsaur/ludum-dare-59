@@ -1,10 +1,12 @@
 extends CanvasLayer
 
 @onready var color_rect = $ColorRect
+@onready var transition_sound = $TransitionSound
 
 @export var scene_map : Dictionary[String, PackedScene]
 
 func transition_to(scene_name):
+	transition_sound.play()
 	var new_scene = scene_map.get(scene_name)
 	if not new_scene:
 		return
@@ -16,6 +18,7 @@ func transition_to(scene_name):
 	tween.tween_callback(change_scene.bind(new_scene)).set_delay(0.15)
 
 func transition_before(callback):
+	transition_sound.play()
 	get_tree().paused = true
 	color_rect.show()
 	var tween = get_tree().create_tween()
