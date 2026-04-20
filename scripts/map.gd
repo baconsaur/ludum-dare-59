@@ -21,7 +21,12 @@ var tile_obj: PackedScene = preload("res://scenes/tile.tscn")
 func _ready() -> void:
 	randomize()
 
-func initialize():
+func initialize(map_data):
+	width = map_data["width"]
+	height = map_data["height"]
+	start_flags = map_data["start_flags"]
+	scan_radius = map_data["scan_radius"]
+
 	num_flags = start_flags
 	for row in grid:
 		for tile in row:
