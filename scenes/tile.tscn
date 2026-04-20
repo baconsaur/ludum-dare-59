@@ -1,17 +1,26 @@
-[gd_scene load_steps=5 format=3 uid="uid://dc0oyuwggfsh5"]
+[gd_scene load_steps=7 format=3 uid="uid://dc0oyuwggfsh5"]
 
 [ext_resource type="Texture2D" uid="uid://bmnjmwc4dk4hy" path="res://sprites/base_tile.png" id="1_3dk36"]
 [ext_resource type="Script" uid="uid://cr6qve8nfrhi7" path="res://scripts/tile.gd" id="2_ywnoi"]
 [ext_resource type="Texture2D" uid="uid://cx7270cqgjakd" path="res://sprites/flag.png" id="3_jy7pm"]
 [ext_resource type="Texture2D" uid="uid://t4j4n02hucp" path="res://sprites/scan_effect.png" id="4_q7utx"]
 
+[sub_resource type="Gradient" id="Gradient_6p3j2"]
+offsets = PackedFloat32Array(0, 0.5069638, 1)
+colors = PackedColorArray(0.92399037, 0.9061867, 0.9224566, 1, 0.9697719, 0.88185596, 0.66329914, 1, 0.91, 0.61971, 0.1183, 1)
+
+[sub_resource type="Gradient" id="Gradient_q7utx"]
+offsets = PackedFloat32Array(0, 0.18233618, 0.5071225)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.87058824, 0.20784314, 0.8901961, 1, 0.40799463, 0.21482939, 0)
+
 [node name="Tile" type="TextureButton"]
 button_mask = 3
 texture_normal = ExtResource("1_3dk36")
 script = ExtResource("2_ywnoi")
+value_color_range = SubResource("Gradient_6p3j2")
 
 [node name="ScanEffect" type="TextureRect" parent="."]
-self_modulate = Color(1, 1, 1, 0)
+self_modulate = Color(0.78933334, 1, 0.20999998, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -43,3 +52,40 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_jy7pm")
 stretch_mode = 3
+
+[node name="ValueDebug" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -3.0
+offset_top = -6.0
+offset_right = 3.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.00043669515
+theme_override_colors/font_color = Color(0.19215015, 0.2970397, 0.5249296, 0.74509805)
+theme_override_font_sizes/font_size = 5
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SparkleEffect" type="CPUParticles2D" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(8, 8)
+amount = 32
+lifetime = 0.15000000000000002
+preprocess = 0.5
+speed_scale = 0.15
+randomness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(7, 7)
+direction = Vector2(0, -1)
+gravity = Vector2(0, 0)
+color_ramp = SubResource("Gradient_q7utx")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

@@ -13,6 +13,7 @@ signal flags_updated
 @export var max_signal_freq_offset: float = 0.65
 
 var num_flags: int
+var max_score: int = 0
 
 var grid: Array = []
 var tile_obj: PackedScene = preload("res://scenes/tile.tscn")
@@ -49,6 +50,7 @@ func initialize(map_data):
 	noise_map.domain_warp_amplitude = 65
 	noise_map.domain_warp_frequency = 0.05
 
+	var tile_amplitudes = {}
 	self.columns = width
 	for i in range(height):
 		var row = []
@@ -56,9 +58,15 @@ func initialize(map_data):
 		for j in range(width):
 			var tile = tile_obj.instantiate()
 			tile.pressed.connect(tile_action.bind(tile, i, j))
+			tile.hovered.connect(tile_action.bind(tile, i, j))
 			add_child(tile)
+			var amplitude = abs(noise_map.get_noise_2d(i, j))
+			if amplitude in tile_amplitudes:
+				tile_amplitudes[amplitude].append(tile)
+			else:
+				tile_amplitudes[amplitude] = [tile]
 			tile.init_tile(
-				abs(noise_map.get_noise_2d(i, j)),
+				amplitude,
 				randf_range(
 					base_signal_freq,
 					base_signal_freq + max_signal_freq_offset,
@@ -66,13 +74,24 @@ func initialize(map_data):
 			)
 			row.append(tile)
 	
+	var amp_values = tile_amplitudes.keys()
+	amp_values.sort()
+
+	max_score = 0
+	for i in range(len(amp_values)):
+		var tiles = tile_amplitudes[amp_values[i]]
+		for tile in tiles:
+			tile.set_value(i, len(amp_values) - 1)
+		if i >= len(amp_values) - num_flags:
+			max_score += i
+
 	emit_signal("flags_updated", num_flags)
 
 func tile_action(tile, i, j):
 	# TODO de-jank this if time allows
 	if Input.is_action_just_released("flag"):
 		flag(tile, Vector2i(i, j))
-	elif Input.is_action_just_released("scan"):
+	else:
 		scan(tile, Vector2i(i, j))
 	
 func scan(tile, coords: Vector2i):
@@ -139,4 +158,4 @@ func reveal_score():
 	for row in grid:
 		for tile in row:
 			score += tile.score()
-	return score
+	return [score, max_score]
