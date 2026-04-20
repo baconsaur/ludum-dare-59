@@ -1,17 +1,65 @@
-[gd_scene load_steps=14 format=3 uid="uid://dc0oyuwggfsh5"]
+[gd_scene load_steps=25 format=3 uid="uid://dc0oyuwggfsh5"]
 
 [ext_resource type="Texture2D" uid="uid://bmnjmwc4dk4hy" path="res://sprites/base_tile.png" id="1_3dk36"]
 [ext_resource type="Script" uid="uid://cr6qve8nfrhi7" path="res://scripts/tile.gd" id="2_ywnoi"]
 [ext_resource type="Texture2D" uid="uid://cx7270cqgjakd" path="res://sprites/flag.png" id="3_jy7pm"]
+[ext_resource type="Texture2D" uid="uid://c0cog7ybn81ae" path="res://sprites/scan_target.png" id="4_jdkp0"]
 [ext_resource type="Texture2D" uid="uid://t4j4n02hucp" path="res://sprites/scan_effect.png" id="4_q7utx"]
 [ext_resource type="Texture2D" uid="uid://b4ohgyqg7mh2b" path="res://sprites/building.png" id="5_6p3j2"]
+[ext_resource type="Texture2D" uid="uid://oyuvsx73tw3" path="res://sprites/flag1.png" id="5_vknvr"]
 [ext_resource type="AudioStream" uid="uid://khpw8x7a4spm" path="res://sound/reward.wav" id="6_gtpg2"]
+[ext_resource type="Texture2D" uid="uid://desci2627mme0" path="res://sprites/flag2.png" id="6_jdkp0"]
 [ext_resource type="AudioStream" uid="uid://blipiifb3u4o1" path="res://sound/flag.wav" id="7_284l3"]
 [ext_resource type="AudioStream" uid="uid://dne8d8eawbqwn" path="res://sound/build.wav" id="7_a2bny"]
+[ext_resource type="Texture2D" uid="uid://dk4rr68lc24r" path="res://sprites/flag3.png" id="7_q8xw3"]
+[ext_resource type="Texture2D" uid="uid://4lcaa6xpead" path="res://sprites/flag4.png" id="8_lkxpj"]
+[ext_resource type="Texture2D" uid="uid://bcr83wdlghdoa" path="res://sprites/flag5.png" id="9_lf0mp"]
 
 [sub_resource type="Gradient" id="Gradient_6p3j2"]
 offsets = PackedFloat32Array(0, 0.5069638, 1)
 colors = PackedColorArray(0.92399037, 0.9061867, 0.9224566, 1, 0.9697719, 0.88185596, 0.66329914, 1, 0.91, 0.61971, 0.1183, 1)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_284l3"]
+blend_mode = 1
+
+[sub_resource type="Animation" id="Animation_3ngql"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_jy7pm")]
+}
+
+[sub_resource type="Animation" id="Animation_ufjw7"]
+resource_name = "wave"
+length = 0.416675
+loop_mode = 1
+step = 0.083333336
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.083333336, 0.16666667, 0.25, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("5_vknvr"), ExtResource("6_jdkp0"), ExtResource("7_q8xw3"), ExtResource("8_lkxpj"), ExtResource("9_lf0mp")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gqnqq"]
+_data = {
+&"RESET": SubResource("Animation_3ngql"),
+&"wave": SubResource("Animation_ufjw7")
+}
 
 [sub_resource type="Animation" id="Animation_gtpg2"]
 length = 0.001
@@ -49,12 +97,12 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(5, 2)]
+"values": [Vector2(2, -4)]
 }
 
 [sub_resource type="Animation" id="Animation_6p3j2"]
 resource_name = "reward"
-length = 1.0000042
+length = 0.70833755
 step = 0.041666668
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -63,7 +111,7 @@ tracks/0/path = NodePath("Value:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.20833333, 0.875, 1),
+"times": PackedFloat32Array(0, 0.14583333, 0.5833333, 0.7083333),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -75,7 +123,7 @@ tracks/1/path = NodePath("Value:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 0.7083333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, false]
@@ -87,10 +135,10 @@ tracks/2/path = NodePath("Value:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.125, 0.9166667),
+"times": PackedFloat32Array(0.083333336, 0.625),
 "transitions": PackedFloat32Array(1, 1.8025023),
 "update": 0,
-"values": [Vector2(5, 2), Vector2(5, -16)]
+"values": [Vector2(2, -4), Vector2(2, -10)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_a2bny"]
@@ -99,18 +147,22 @@ _data = {
 &"reward": SubResource("Animation_6p3j2")
 }
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_j3iir"]
+blend_mode = 1
+
 [sub_resource type="Gradient" id="Gradient_q7utx"]
-offsets = PackedFloat32Array(0, 0.18233618, 0.5071225)
-colors = PackedColorArray(1, 1, 1, 1, 1, 0.87058824, 0.20784314, 0.8901961, 1, 0.40799463, 0.21482939, 0)
+offsets = PackedFloat32Array(0, 0.054285713, 0.18233618, 0.5071225)
+colors = PackedColorArray(0.98333335, 1, 0.98, 1, 0.83808, 0.97, 0.8051, 0.92156863, 0.5376, 0.84, 0.80472004, 0.8352941, 0.1612, 0.29883996, 0.62, 0)
 
 [node name="Tile" type="TextureButton"]
-button_mask = 3
+mouse_filter = 1
 texture_normal = ExtResource("1_3dk36")
 script = ExtResource("2_ywnoi")
 value_color_range = SubResource("Gradient_6p3j2")
 
 [node name="ScanEffect" type="TextureRect" parent="."]
-self_modulate = Color(0.78933334, 1, 0.20999998, 0)
+self_modulate = Color(0.99215686, 0.81960785, 0.4745098, 0)
+material = SubResource("CanvasItemMaterial_284l3")
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -126,25 +178,50 @@ grow_vertical = 2
 texture = ExtResource("4_q7utx")
 stretch_mode = 3
 
-[node name="Flag" type="TextureRect" parent="."]
+[node name="ScanTarget" type="TextureRect" parent="."]
 visible = false
+self_modulate = Color(1, 1, 1, 0.5254902)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = -7.5
+offset_top = -7.5
+offset_right = 7.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_jdkp0")
+
+[node name="Flag" type="TextureRect" parent="."]
+visible = false
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -11.0
+offset_right = 6.0
+offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_jy7pm")
 stretch_mode = 3
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Flag"]
+libraries = {
+&"": SubResource("AnimationLibrary_gqnqq")
+}
+autoplay = "wave"
+
 [node name="Building" type="TextureRect" parent="."]
 visible = false
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -162,22 +239,24 @@ stretch_mode = 3
 
 [node name="Value" type="Label" parent="."]
 visible = false
+z_index = 10
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -3.0
-offset_top = -6.0
-offset_right = 9.0
-offset_bottom = 18.0
+offset_left = -6.0
+offset_top = -12.0
+offset_right = 6.000004
+offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 0.00043669515
 theme_override_colors/font_color = Color(1, 0.9766667, 0.9, 1)
 theme_override_colors/font_shadow_color = Color(0.41268003, 0.30779997, 0.57, 0.22352941)
-theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 5
 text = "0"
 horizontal_alignment = 1
@@ -190,38 +269,41 @@ libraries = {
 }
 
 [node name="SparkleEffect" type="CPUParticles2D" parent="."]
-self_modulate = Color(1, 1, 1, 0)
+material = SubResource("CanvasItemMaterial_j3iir")
 position = Vector2(8, 8)
-amount = 32
+emitting = false
+amount = 42
 lifetime = 0.15000000000000002
-preprocess = 0.5
-speed_scale = 0.15
+one_shot = true
+speed_scale = 0.4
+explosiveness = 0.59
 randomness = 1.0
 emission_shape = 3
-emission_rect_extents = Vector2(7, 7)
+emission_rect_extents = Vector2(7, 6)
 direction = Vector2(0, -1)
-gravity = Vector2(0, 0)
+gravity = Vector2(0, -700)
+initial_velocity_min = 10.0
+initial_velocity_max = 20.0
 color_ramp = SubResource("Gradient_q7utx")
 
 [node name="RewardSound" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(-4.7683716e-07, -2.3841858e-07)
 scale = Vector2(1.0000001, 1.0000001)
 stream = ExtResource("6_gtpg2")
-volume_db = 2.0
 bus = &"SFX"
 
 [node name="FlagSound" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(-4.7683716e-07, -2.3841858e-07)
 scale = Vector2(1.0000001, 1.0000001)
 stream = ExtResource("7_284l3")
-volume_db = 2.0
+volume_db = 1.25
 bus = &"SFX"
 
 [node name="BuildSound" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(-4.7683716e-07, -2.3841858e-07)
 scale = Vector2(1.0000001, 1.0000001)
 stream = ExtResource("7_a2bny")
-volume_db = 6.0
+volume_db = 4.0
 bus = &"SFX"
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

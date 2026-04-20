@@ -1,24 +1,42 @@
-[gd_scene load_steps=2 format=3 uid="uid://rg4lgb5gkjyx"]
+[gd_scene load_steps=3 format=3 uid="uid://rg4lgb5gkjyx"]
 
 [ext_resource type="Script" uid="uid://bjsojkbl7s2qc" path="res://scripts/map.gd" id="1_4xfga"]
 
-[node name="Map" type="GridContainer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xfga"]
+bg_color = Color(0.34901962, 0.24313726, 0.2784314, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 8
+border_color = Color(0.34901962, 0.24313726, 0.2784314, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+anti_aliasing = false
+
+[node name="MapContainer" type="PanelContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -2.0
+offset_top = -4.5
+offset_right = 2.0
+offset_bottom = 4.5
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_4xfga")
+
+[node name="Map" type="GridContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 script = ExtResource("1_4xfga")
-width = 15
-height = 10
-scan_radius = 2
+
+[connection signal="mouse_exited" from="." to="Map" method="_on_map_container_mouse_exited"]

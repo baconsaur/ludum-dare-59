@@ -17,8 +17,6 @@ var max_score: int = 0
 var grid: Array = []
 var tile_obj: PackedScene = preload("res://scenes/tile.tscn")
 
-@onready var transition_sound = $TransitionSound
-
 func _ready() -> void:
 	randomize()
 
@@ -37,10 +35,7 @@ func initialize(map_data):
 	var noise_map = FastNoiseLite.new()
 	# Test values with this: https://auburn.github.io/FastNoiseLite
 	noise_map.noise_type = FastNoiseLite.TYPE_CELLULAR
-	if OS.is_debug_build():
-		noise_map.seed = 69420
-	else:
-		noise_map.seed = randi()
+	noise_map.seed = randi()
 	noise_map.frequency = noise_frequency
 	noise_map.cellular_distance_function = FastNoiseLite.DISTANCE_HYBRID
 	noise_map.cellular_return_type = FastNoiseLite.RETURN_DISTANCE2_MUL
@@ -167,4 +162,11 @@ func reveal_score():
 			if tile_score > 0:
 				timeout = 0.1
 			await get_tree().create_timer(timeout).timeout
+	await get_tree().create_timer(0.5).timeout
 	return [score, max_score]
+
+
+func _on_map_container_mouse_exited() -> void:
+	clear_scan()
+	emit_signal("scanned", [], 0)
+	

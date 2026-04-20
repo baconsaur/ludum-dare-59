@@ -1,40 +1,122 @@
-[gd_scene load_steps=10 format=3 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=21 format=3 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://3xw067i2h3vo" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://dgugr3b708uqa" path="res://ui/scenes/pause.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://c4dkm3sxlixjh" path="res://ui/scripts/hud.gd" id="1_yqjtg"]
+[ext_resource type="Script" uid="uid://cbaa5serwuixh" path="res://scripts/background_controller.gd" id="2_kvuet"]
+[ext_resource type="Texture2D" uid="uid://d4iumsqs62yur" path="res://sprites/background1.png" id="2_trtic"]
+[ext_resource type="Texture2D" uid="uid://5dr5paq7hcyt" path="res://sprites/background2.png" id="3_ir15t"]
 [ext_resource type="PackedScene" uid="uid://rg4lgb5gkjyx" path="res://scenes/map.tscn" id="4_iywne"]
 [ext_resource type="Script" uid="uid://fwif2mvttqd4" path="res://scripts/scanner.gd" id="5_iywne"]
 [ext_resource type="Texture2D" uid="uid://cx7270cqgjakd" path="res://sprites/flag.png" id="6_p57ef"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p57ef"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.92, 0.56733334, 0, 0.8509804)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
+[ext_resource type="Texture2D" uid="uid://oyuvsx73tw3" path="res://sprites/flag1.png" id="7_dinhu"]
+[ext_resource type="Theme" uid="uid://dmcqcp5t2gljr" path="res://ui/default_theme.tres" id="7_u5sy4"]
+[ext_resource type="Texture2D" uid="uid://desci2627mme0" path="res://sprites/flag2.png" id="8_kvuet"]
+[ext_resource type="Texture2D" uid="uid://dk4rr68lc24r" path="res://sprites/flag3.png" id="9_trtic"]
+[ext_resource type="Texture2D" uid="uid://4lcaa6xpead" path="res://sprites/flag4.png" id="10_ir15t"]
+[ext_resource type="Texture2D" uid="uid://bcr83wdlghdoa" path="res://sprites/flag5.png" id="11_ca42v"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5sy4"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(1, 0.835, 0.45, 0.8509804)
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.12, 0.102, 0.106199995, 0.7882353)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
+anti_aliasing = false
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p57ef"]
+[sub_resource type="Animation" id="Animation_3ngql"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_p57ef")]
+}
+
+[sub_resource type="Animation" id="Animation_ufjw7"]
+resource_name = "wave"
+length = 0.416675
+loop_mode = 1
+step = 0.083333336
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.083333336, 0.16666667, 0.25, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("7_dinhu"), ExtResource("8_kvuet"), ExtResource("9_trtic"), ExtResource("10_ir15t"), ExtResource("11_ca42v")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gqnqq"]
+_data = {
+&"RESET": SubResource("Animation_3ngql"),
+&"wave": SubResource("Animation_ufjw7")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ir15t"]
+content_margin_left = 2.0
+content_margin_top = 0.0
+content_margin_right = 1.0
+content_margin_bottom = 0.0
+bg_color = Color(0.87058824, 0.62352943, 0.2784314, 0.92156863)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.70980394, 0.34901962, 0.27058825, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 1.0
+expand_margin_right = 2.0
+expand_margin_bottom = 1.0
+anti_aliasing = false
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Parallax2D" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0.1, 0.1)
+repeat_size = Vector2(180, 180)
+autoscroll = Vector2(32, 32)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/Parallax2D"]
+texture = ExtResource("2_trtic")
+
+[node name="Parallax2D2" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0.1, 0.1)
+repeat_size = Vector2(180, 180)
+autoscroll = Vector2(20, 20)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/Parallax2D2"]
+texture = ExtResource("3_ir15t")
+
+[node name="BackgroundController" type="Node2D" parent="."]
+script = ExtResource("2_kvuet")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -42,7 +124,7 @@ script = ExtResource("1_lnu2h")
 script = ExtResource("1_yqjtg")
 pause_scene = ExtResource("1_uwrxv")
 
-[node name="Map" parent="HUD" instance=ExtResource("4_iywne")]
+[node name="MapContainer" parent="HUD" instance=ExtResource("4_iywne")]
 
 [node name="Scanner" type="MarginContainer" parent="HUD"]
 anchors_preset = 7
@@ -65,24 +147,36 @@ theme_override_constants/margin_bottom = 2
 [node name="ScanDisplay" type="Panel" parent="HUD/Scanner"]
 clip_contents = true
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_u5sy4")
 
 [node name="ScanSignals" type="Line2D" parent="HUD/Scanner/ScanDisplay"]
 position = Vector2(1, 13)
 script = ExtResource("5_iywne")
+wave_color = Color(0.92156863, 0.5882353, 0.38039216, 1)
 
-[node name="Flags" type="HBoxContainer" parent="HUD"]
-offset_right = 26.0
-offset_bottom = 16.0
+[node name="MarginContainer" type="MarginContainer" parent="HUD"]
+offset_right = 4.0
+offset_bottom = 4.0
+
+[node name="Flags" type="HBoxContainer" parent="HUD/MarginContainer"]
+layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
-theme_override_constants/separation = 0
+theme_override_constants/separation = 4
 
-[node name="FlagIcon" type="TextureRect" parent="HUD/Flags"]
+[node name="FlagIcon2" type="TextureRect" parent="HUD/MarginContainer/Flags"]
 layout_mode = 2
 texture = ExtResource("6_p57ef")
 stretch_mode = 3
 
-[node name="FlagCount" type="Label" parent="HUD/Flags"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD/MarginContainer/Flags/FlagIcon2"]
+libraries = {
+&"": SubResource("AnimationLibrary_gqnqq")
+}
+autoplay = "wave"
+
+[node name="FlagCount" type="Label" parent="HUD/MarginContainer/Flags"]
+self_modulate = Color(0.99215686, 0.81960785, 0.4745098, 1)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 5
@@ -106,36 +200,39 @@ theme_override_constants/margin_bottom = 4
 
 [node name="EndLevel" type="Button" parent="HUD/LevelEndPrompt"]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_p57ef")
-theme_override_styles/hover = SubResource("StyleBoxFlat_u5sy4")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_p57ef")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ir15t")
 disabled = true
-text = "Build"
+text = "Done"
 icon_alignment = 2
 
 [node name="NextLevelPrompt" type="MarginContainer" parent="HUD"]
-visible = false
+custom_minimum_size = Vector2(100, 42)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -90.0
-offset_right = 90.0
-offset_bottom = 60.0
+offset_left = -25.5
+offset_right = 25.5
+offset_bottom = 28.0
 grow_horizontal = 2
 mouse_filter = 2
+theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 
 [node name="Panel" type="Panel" parent="HUD/NextLevelPrompt"]
-custom_minimum_size = Vector2(180, 52)
 layout_mode = 2
+theme = ExtResource("7_u5sy4")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/NextLevelPrompt"]
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 2
 
 [node name="LevelStats" type="Label" parent="HUD/NextLevelPrompt/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 5
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -145,6 +242,41 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 text = "Continue
 "
+
+[node name="FailedLevelPrompt" type="MarginContainer" parent="HUD"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -90.0
+offset_right = 90.0
+offset_bottom = 54.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 2
+
+[node name="Panel" type="Panel" parent="HUD/FailedLevelPrompt"]
+custom_minimum_size = Vector2(180, 52)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/FailedLevelPrompt"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="LevelStats" type="RichTextLabel" parent="HUD/FailedLevelPrompt/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Retry" type="Button" parent="HUD/FailedLevelPrompt/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Retry"
 
 [node name="EndGamePrompt" type="CenterContainer" parent="HUD"]
 visible = false
@@ -160,6 +292,7 @@ offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("7_u5sy4")
 
 [node name="Panel" type="Panel" parent="HUD/EndGamePrompt"]
 custom_minimum_size = Vector2(240, 120)
@@ -170,6 +303,7 @@ layout_mode = 2
 
 [node name="EndStats" type="Label" parent="HUD/EndGamePrompt/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 5
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -190,6 +324,7 @@ theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="Score" type="Label" parent="HUD/Stats"]
+self_modulate = Color(0.99215686, 0.81960785, 0.4745098, 1)
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 5
@@ -199,4 +334,5 @@ vertical_alignment = 1
 
 [connection signal="pressed" from="HUD/LevelEndPrompt/EndLevel" to="." method="_on_end_level_pressed"]
 [connection signal="pressed" from="HUD/NextLevelPrompt/VBoxContainer/Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="HUD/FailedLevelPrompt/VBoxContainer/Retry" to="." method="_on_retry_pressed"]
 [connection signal="pressed" from="HUD/EndGamePrompt/VBoxContainer/EndGame" to="." method="_on_end_game_pressed"]
