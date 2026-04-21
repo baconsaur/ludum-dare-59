@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Ludum Dare 59"
-run/main_scene="uid://dr8bc8vbn4ju"
+config/name="Sparkle Sweeper"
+run/main_scene="uid://cdceaenvnjnfy"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 boot_splash/fullsize=false
 boot_splash/use_filter=false

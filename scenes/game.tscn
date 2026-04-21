@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dr8bc8vbn4ju"]
+[gd_scene load_steps=23 format=3 uid="uid://dr8bc8vbn4ju"]
 
 [ext_resource type="Script" uid="uid://3xw067i2h3vo" path="res://scripts/game_controller.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://dgugr3b708uqa" path="res://ui/scenes/pause.tscn" id="1_uwrxv"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://dk4rr68lc24r" path="res://sprites/flag3.png" id="9_trtic"]
 [ext_resource type="Texture2D" uid="uid://4lcaa6xpead" path="res://sprites/flag4.png" id="10_ir15t"]
 [ext_resource type="Texture2D" uid="uid://bcr83wdlghdoa" path="res://sprites/flag5.png" id="11_ca42v"]
+[ext_resource type="AudioStream" uid="uid://ci232xjop3cin" path="res://sound/bgm.wav" id="16_ca42v"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5sy4"]
 content_margin_left = 0.0
@@ -90,6 +91,25 @@ expand_margin_right = 2.0
 expand_margin_bottom = 1.0
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ca42v"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.42209998, 0.50525993, 0.63, 0.9372549)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2509804, 0.32156864, 0.4509804, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_bottom = 2.0
+anti_aliasing = false
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
 
@@ -127,6 +147,7 @@ pause_scene = ExtResource("1_uwrxv")
 [node name="MapContainer" parent="HUD" instance=ExtResource("4_iywne")]
 
 [node name="Scanner" type="MarginContainer" parent="HUD"]
+z_index = 2
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -139,6 +160,7 @@ grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 8
+mouse_filter = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
@@ -147,6 +169,7 @@ theme_override_constants/margin_bottom = 2
 [node name="ScanDisplay" type="Panel" parent="HUD/Scanner"]
 clip_contents = true
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_u5sy4")
 
 [node name="ScanSignals" type="Line2D" parent="HUD/Scanner/ScanDisplay"]
@@ -176,7 +199,7 @@ libraries = {
 autoplay = "wave"
 
 [node name="FlagCount" type="Label" parent="HUD/MarginContainer/Flags"]
-self_modulate = Color(0.99215686, 0.81960785, 0.4745098, 1)
+self_modulate = Color(0.8352941, 0.8392157, 0.85882354, 1)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 5
@@ -206,6 +229,8 @@ text = "Done"
 icon_alignment = 2
 
 [node name="NextLevelPrompt" type="MarginContainer" parent="HUD"]
+visible = false
+z_index = 2
 custom_minimum_size = Vector2(100, 42)
 anchors_preset = 5
 anchor_left = 0.5
@@ -245,6 +270,7 @@ text = "Continue
 
 [node name="FailedLevelPrompt" type="MarginContainer" parent="HUD"]
 visible = false
+z_index = 2
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -280,6 +306,7 @@ text = "Retry"
 
 [node name="EndGamePrompt" type="CenterContainer" parent="HUD"]
 visible = false
+z_index = 2
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -297,6 +324,7 @@ theme = ExtResource("7_u5sy4")
 [node name="Panel" type="Panel" parent="HUD/EndGamePrompt"]
 custom_minimum_size = Vector2(240, 120)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ca42v")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/EndGamePrompt"]
 layout_mode = 2
@@ -311,6 +339,44 @@ vertical_alignment = 1
 layout_mode = 2
 text = "Play Again"
 
+[node name="StartingPrompt" type="CenterContainer" parent="HUD"]
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -60.0
+offset_right = 120.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Panel" type="Panel" parent="HUD/StartingPrompt"]
+custom_minimum_size = Vector2(240, 120)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ca42v")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/StartingPrompt"]
+layout_mode = 2
+
+[node name="Instructions" type="Label" parent="HUD/StartingPrompt/VBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "Survey the area with your mineral scanner and flag the most promising dig sites
+
+Click a tile to place or remove a flag"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="StartGame" type="Button" parent="HUD/StartingPrompt/VBoxContainer"]
+layout_mode = 2
+text = "Got it!"
+
 [node name="Stats" type="MarginContainer" parent="HUD"]
 anchors_preset = 1
 anchor_left = 1.0
@@ -324,7 +390,7 @@ theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="Score" type="Label" parent="HUD/Stats"]
-self_modulate = Color(0.99215686, 0.81960785, 0.4745098, 1)
+self_modulate = Color(0.8352941, 0.8392157, 0.85882354, 1)
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 5
@@ -332,7 +398,15 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("16_ca42v")
+volume_db = -1.0
+autoplay = true
+bus = &"Music"
+
 [connection signal="pressed" from="HUD/LevelEndPrompt/EndLevel" to="." method="_on_end_level_pressed"]
 [connection signal="pressed" from="HUD/NextLevelPrompt/VBoxContainer/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="HUD/FailedLevelPrompt/VBoxContainer/Retry" to="." method="_on_retry_pressed"]
 [connection signal="pressed" from="HUD/EndGamePrompt/VBoxContainer/EndGame" to="." method="_on_end_game_pressed"]
+[connection signal="pressed" from="HUD/StartingPrompt/VBoxContainer/StartGame" to="." method="_on_start_game_pressed"]

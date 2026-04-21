@@ -1,9 +1,37 @@
-[gd_scene load_steps=3 format=3 uid="uid://cdceaenvnjnfy"]
+[gd_scene load_steps=6 format=3 uid="uid://cdceaenvnjnfy"]
 
+[ext_resource type="Texture2D" uid="uid://d4iumsqs62yur" path="res://sprites/background1.png" id="1_p3fdt"]
 [ext_resource type="PackedScene" uid="uid://csjjjbo38bicy" path="res://ui/scenes/menu.tscn" id="1_tfcyl"]
+[ext_resource type="Texture2D" uid="uid://5dr5paq7hcyt" path="res://sprites/background2.png" id="2_0rkqf"]
 [ext_resource type="Script" uid="uid://c5rj1cwd0cm8a" path="res://ui/scripts/main_menu.gd" id="2_pvlg3"]
+[ext_resource type="Script" uid="uid://cbaa5serwuixh" path="res://scripts/background_controller.gd" id="3_4lfiy"]
 
 [node name="MainMenu" type="Node2D"]
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Parallax2D" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0.1, 0.1)
+repeat_size = Vector2(180, 180)
+autoscroll = Vector2(32, 32)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/Parallax2D"]
+texture = ExtResource("1_p3fdt")
+
+[node name="Parallax2D2" type="Parallax2D" parent="Background"]
+scroll_scale = Vector2(0.1, 0.1)
+repeat_size = Vector2(180, 180)
+autoscroll = Vector2(20, 20)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/Parallax2D2"]
+texture = ExtResource("2_0rkqf")
+
+[node name="BackgroundController" type="Node2D" parent="."]
+script = ExtResource("3_4lfiy")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -11,9 +39,19 @@
 script = ExtResource("2_pvlg3")
 
 [node name="Title" parent="CanvasLayer/Menu/Margin/Content" index="0"]
+theme_override_colors/font_outline_color = Color(0.2509804, 0.32156864, 0.4509804, 1)
+theme_override_constants/outline_size = 3
+text = "Sparkle Sweeper"
+
+[node name="Title2" type="Label" parent="CanvasLayer/Menu/Margin/Content" index="1"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42352942, 0.5058824, 0.6313726, 1)
+theme_override_font_sizes/font_size = 5
 text = "Ludum Dare 59"
 
-[node name="Actions" type="VBoxContainer" parent="CanvasLayer/Menu/Margin/Content" index="1"]
+[node name="Actions" type="VBoxContainer" parent="CanvasLayer/Menu/Margin/Content" index="2"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6

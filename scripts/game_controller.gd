@@ -6,6 +6,7 @@ var total_score = 0
 @onready var map = $HUD/MapContainer/Map
 @onready var scan_line = $HUD/Scanner/ScanDisplay/ScanSignals
 @onready var flag_display = $HUD/MarginContainer/Flags/FlagCount
+@onready var start_prompt = $HUD/StartingPrompt
 @onready var end_level_prompt = $HUD/LevelEndPrompt
 @onready var end_level_button = $HUD/LevelEndPrompt/EndLevel
 @onready var next_level_prompt = $HUD/NextLevelPrompt
@@ -119,3 +120,6 @@ func _on_end_game_pressed() -> void:
 func _on_retry_pressed() -> void:
 	failed_level_prompt.visible = false
 	SceneManager.transition_before(init_map)
+
+func _on_start_game_pressed() -> void:
+	start_prompt.queue_free()
